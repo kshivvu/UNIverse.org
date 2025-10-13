@@ -105,7 +105,10 @@ const Login = () => {
 
               {/* Login Button */}
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(139,92,246,0.7)" }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 15px rgba(139,92,246,0.7)",
+                }}
                 whileTap={{ scale: 0.97 }}
                 type="submit"
                 className="bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 w-full px-6 py-2 rounded-lg text-sky-300 transition-all duration-300"
@@ -170,7 +173,10 @@ const Login = () => {
         >
           <motion.h1
             className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-violet-400 via-indigo-400 to-cyan-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(99,102,241,0.5)]"
-            whileHover={{ scale: 1.05, textShadow: "0 0 15px rgba(139,92,246,0.8)" }}
+            whileHover={{
+              scale: 1.05,
+              textShadow: "0 0 15px rgba(139,92,246,0.8)",
+            }}
           >
             UNIverse
           </motion.h1>
