@@ -1,15 +1,25 @@
 "use client";
 import React from "react";
+import { useActionState } from "react";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
-import { FaApple } from "react-icons/fa";
+import { FaApple, FaGithub } from "react-icons/fa";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { FlipWords } from "@/components/ui/flip-words";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
+import Link from "next/link";
+import { loginUser ,github_login ,google_login } from "../../action/user";
+
+
+
+
 
 const word: string[] = ["students", "colleges", "clubs"];
 
-const Login = () => {
+const Login =  () => {
+  
+
+  const [state, formAction] = useActionState(loginUser, { error: "" });
   return (
     <div className="grid min-h-screen bg-black md:grid-cols-2 p-4 overflow-hidden">
       {/* LEFT PANEL (Form) */}
@@ -60,6 +70,7 @@ const Login = () => {
               }}
               transition={{ type: "spring", stiffness: 100, damping: 10 }}
               className="flex flex-col items-center mt-4"
+              action={formAction}
             >
               {/* Email */}
               <div className="w-full mb-4">
@@ -94,7 +105,13 @@ const Login = () => {
               </div>
 
               {/* Forgot Password */}
-              <div className="w-full flex justify-end mb-4">
+              <div className="w-full flex justify-between mb-4 ">
+                <Link
+                  href={"/signup"}
+                  className="text-sky-400 text-xs hover:text-sky-300 underline underline-offset-2 transition-all duration-200"
+                >
+                  Don't Have an Account?Sign Up
+                </Link>
                 <a
                   href="#"
                   className="text-sky-400 text-xs hover:text-sky-300 underline underline-offset-2 transition-all duration-200"
@@ -103,6 +120,11 @@ const Login = () => {
                 </a>
               </div>
 
+              {state?.error && (
+                <p className="text-red-400 text-sm mb-2 text-center w-full">
+                  {state.error}
+                </p>
+              )}
               {/* Login Button */}
               <motion.button
                 whileHover={{
@@ -111,35 +133,38 @@ const Login = () => {
                 }}
                 whileTap={{ scale: 0.97 }}
                 type="submit"
-                className="bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 w-full px-6 py-2 rounded-lg text-sky-300 transition-all duration-300"
+                className="bg-gradient-to-r mt-2  from-indigo-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 w-full px-6 py-2 rounded-lg text-sky-300 transition-all duration-300"
               >
                 Login
               </motion.button>
-
-              {/* Divider */}
-              <div className="flex items-center justify-center mt-4 mb-2 w-full">
-                <span className="text-gray-400 text-sm">OR</span>
-              </div>
-
-              {/* OAuth Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 w-full">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  type="button"
-                  className="bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 flex items-center justify-center gap-2 w-full sm:w-1/2 px-4 py-2 rounded-lg text-sky-300 text-xs transition-all duration-300"
-                >
-                  <FcGoogle size={16} /> Google
-                </motion.button>
-
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  type="button"
-                  className="bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 flex items-center justify-center gap-2 w-full sm:w-1/2 px-4 py-2 rounded-lg text-sky-300 text-xs transition-all duration-300"
-                >
-                  <FaApple className="text-black" size={16} /> Apple
-                </motion.button>
-              </div>
             </motion.form>
+            {/* Divider */}
+            <div className="flex items-center justify-center w-full">
+              <span className="text-gray-400 text-sm">OR</span>
+            </div>
+
+            {/* OAuth Buttons */}
+            <div className="flex flex-col sm:flex-row gap-2 w-full">
+              <form action={google_login} className="w-full sm:w-1/2">
+                <motion.button
+                whileHover={{ scale: 1.05 }}
+                type="submit"
+                className="bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg text-sky-300 text-xs transition-all duration-300"
+              >
+                <FcGoogle size={16} /> Google
+              </motion.button>
+              </form>
+
+              <form action={github_login} className="w-full sm:w-1/2">
+                <motion.button
+                whileHover={{ scale: 1.05 }}
+                type="submit"
+                className="bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 flex items-center justify-center gap-2 w-full  px-4 py-2 rounded-lg text-sky-300 text-xs transition-all duration-300"
+              >
+                <FaGithub className="text-black" size={16} /> GitHub
+              </motion.button>
+              </form>
+            </div>
           </motion.div>
         </BackgroundGradient>
       </motion.div>

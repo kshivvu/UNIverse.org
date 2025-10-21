@@ -43,19 +43,27 @@ const Navigation = () => {
         <div className="flex items-center space-x-2 sm:space-x-4">
           <motion.button
             animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 1, ease: easeInOut , repeat:Infinity}}
+            transition={{ duration: 1, ease: easeInOut, repeat: Infinity }}
           >
             <Link
-              href='/login'
+              href="/login"
               className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-md font-semibold text-sm sm:text-base bg-neutral-200 text-blue-500 hover:bg-blue-500 hover:text-white transition hover:scale-105 duration-300"
             >
               Login
             </Link>
           </motion.button>
 
-          <button className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-md font-semibold text-sm sm:text-base bg-blue-500 text-white hover:bg-neutral-200 hover:text-blue-500 transition hover:scale-105 duration-300">
-            Join
-          </button>
+          <motion.button
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 1, ease: easeInOut, repeat: Infinity }}
+          >
+            <Link
+              href="/signup"
+              className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-md font-semibold text-sm sm:text-base bg-blue-500 text-white hover:bg-neutral-200 hover:text-blue-500 transition hover:scale-105 duration-300"
+            >
+              Join
+            </Link>
+          </motion.button>
 
           {/* Hamburger Menu Button */}
           <button
