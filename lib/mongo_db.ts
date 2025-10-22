@@ -1,36 +1,36 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 declare global {
-  // prevent multiple mongoose connections in dev
-  var mongooseCache: { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null };
+  var mongooseCache: { conn: Mongoose | null; promise: Promise<Mongoose> | null } | undefined;
 }
 
-const connectDb = async (): Promise<typeof mongoose> => {
-  if (!process.env.MONGO_URI) {
-    throw new Error("MONGO_URI environment variable is not defined");
+const MONGODB_URI = process.env.MONGO_URI!;
+
+if (!MONGODB_URI) {
+  throw new Error("⚠️ Please define the MONGODB_URI environment variable inside .env.local");
+}
+
+// Global cache object to store connection across serverless reloads
+let cached = global.mongooseCache;
+
+if (!cached) {
+  cached = global.mongooseCache = { conn: null, promise: null };
+}
+
+export default async function connectDb() {
+  if (cached && cached.conn) return cached.conn; // Return existing connection if found
+
+  if (cached && !cached.promise) {
+    const opts = {
+      bufferCommands: false, // Prevent Mongoose from buffering model commands
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
   }
 
-  const mongo_URI = process.env.MONGO_URI;
-
-  if (global.mongooseCache?.conn) {
-    return global.mongooseCache.conn;
+  if (!cached) {
+    throw new Error("Cached connection is undefined");
   }
-
-  if (!global.mongooseCache) {
-    global.mongooseCache = { conn: null, promise: null };
-  }
-
-  if (!global.mongooseCache.promise) {
-    global.mongooseCache.promise = mongoose
-      .connect(mongo_URI)
-      .then((mongooseInstance) => {
-        return mongooseInstance;
-      });
-  }
-
-  global.mongooseCache.conn = await global.mongooseCache.promise;
-  console.log("✅ MongoDB Connected");
-  return global.mongooseCache.conn;
-};
-
-export default connectDb;
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
