@@ -2,36 +2,37 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { signOut } from "@/auth";
 import { getSession } from "@/app/api/getSession";
-import { User } from "@/models/User";
 import connectDb from "../../../../lib/mongo_db";
+import { User } from "@/models/User";
 
-// Server action for sign-out
 async function handleSignOut() {
   "use server";
   await signOut();
   redirect("/login");
 }
 
-// ✅ Use Record<string, string> for params to satisfy Next.js type
-const HomeProfile = async ({ params }: { params: Record<string, string> }) => {
-  const username = params.username;
+const HomeProfile = async ({
+  params,
+}: {
+  params?: Promise<{ username: string }>;
+}) => {
+  const resolvedParams = await params; // resolve the Promise
+  const username = resolvedParams?.username;
 
   const session = await getSession();
   const user = session?.user;
 
-  if (!user) redirect("/login");
+  if (!user || !username) redirect("/login");
 
   await connectDb();
-
   const dbUser = await User.findOne({ username });
 
-  // If user not found in DB, redirect
   if (!dbUser) redirect("/login");
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold mb-8 text-purple-400">
-        Welcome, {dbUser?.name || username}!
+        Welcome, {dbUser.name || username}!
       </h1>
 
       <form action={handleSignOut}>

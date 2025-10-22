@@ -15,7 +15,7 @@ export default async function SignUpPage() {
     const result = await User.findOne({ email }).select("username");
 
     if (result) {
-      redirect(`/profile/${result.username}`);
+      redirect(`/profile`);
     }
   }
 

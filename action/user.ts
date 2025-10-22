@@ -32,7 +32,7 @@ const loginUser = async(prevState :any , formdata:FormData)=>{
     const username = user?.username;
     if(username)
     {
-        redirect(`/profile/${username}`);
+        redirect(`/profile`);
     }
 }
 

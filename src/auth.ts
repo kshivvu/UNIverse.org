@@ -47,7 +47,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const userdata = {
           name: user.name,
           email: user.email,
-          id: user._id?.toString(),
+          id: user._id ? user._id.toString() : "", // Provide a default value
           uniId: user.uniId,
           role: user.role,
           username: user.username,
@@ -62,7 +62,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token?.sub && token?.role) {
         session.user.id = token.sub;
-        session.user.role = token.role;
+        session.user.role = token.role as string;
       }
       return session;
     },
