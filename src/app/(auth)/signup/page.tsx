@@ -5,28 +5,19 @@ import { User } from "@/models/User";
 import { redirect } from "next/navigation";
 import SignUPP from "@/components/SignUPP";
 
-
-
-
-const SignUp = async() => {
+export default async function SignUpPage() {
   const session = await getSession();
-    const user=session?.user;
-    
-    if(user)
-    {
-      const {email}=user;
-      await connectDb();
-      const result=await User.findOne({email}).select("username")
-      if(result)
-      {
-        redirect(`/profile/${result.username}`)
-      }
-      
-    }
- 
-  return (
-    <SignUPP/>
-  );
-};
+  const user = session?.user;
 
-export default SignUp;
+  if (user) {
+    const { email } = user;
+    await connectDb();
+    const result = await User.findOne({ email }).select("username");
+
+    if (result) {
+      redirect(`/profile/${result.username}`);
+    }
+  }
+
+  return <SignUPP />;
+}

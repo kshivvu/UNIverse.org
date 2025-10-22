@@ -3,7 +3,7 @@ import React from "react";
 import { useActionState } from "react";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
-import { FaApple, FaGithub } from "react-icons/fa";
+import {  FaGithub } from "react-icons/fa";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { FlipWords } from "@/components/ui/flip-words";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
@@ -110,7 +110,7 @@ const Login =  () => {
                   href={"/signup"}
                   className="text-sky-400 text-xs hover:text-sky-300 underline underline-offset-2 transition-all duration-200"
                 >
-                  Don't Have an Account?Sign Up
+                  Dont Have an Account?Sign Up
                 </Link>
                 <a
                   href="#"
