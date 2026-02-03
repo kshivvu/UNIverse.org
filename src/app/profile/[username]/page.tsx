@@ -6,8 +6,8 @@ import connectDb from "../../../../lib/mongo_db";
 import { User } from "@/models/User";
 
 async function handleSignOut() {
-  "use server";
-  await signOut();
+  "use server"
+   await signOut();
   redirect("/login");
 }
 
@@ -23,7 +23,7 @@ const HomeProfile = async ({
   const user = session?.user;
 
   if (!user || !username) redirect("/login");
-
+  
   await connectDb();
   const dbUser = await User.findOne({ username });
 

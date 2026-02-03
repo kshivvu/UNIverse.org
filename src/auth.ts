@@ -5,6 +5,7 @@ import { User } from "./models/User";
 import { compare } from "bcryptjs";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+console.log("✅ NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     GitHub({
@@ -31,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
         await connectDb();
         const user = await User.findOne({ email }).select(
-          "+password +role +username +email "
+          "+password +role +username +email " 
         );
         if (!user) {
           throw new Error("invalid email or password");

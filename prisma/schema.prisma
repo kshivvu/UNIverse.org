@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+enum Role {
+  STUDENT
+  ALUMNI
+  FACULTY
+  COLLEGE_ADMIN
+  SUPER_ADMIN
+}
+model College {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  name      String
+  domain    String?
+  verified  Boolean  @default(false)
+
+  users     User[]
+  posts     Post[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+
+
+model User {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  uniId           String    @unique
+  name            String
+  username        String    @unique
+  email           String    @unique
+  passwordHash    String?
+  authProviderId  String?
+  emailVerified   DateTime?
+  avatarUrl       String?
+  bio             String?   @default("")
+
+  // College Relation
+  collegeId       String?   @db.ObjectId
+  college         College?  @relation(fields: [collegeId], references: [id])
+
+  role            Role      @default(STUDENT)
+  verified        Boolean   @default(false)
+  year            String?
+  branch          String?
+  interests       String[]
+
+  // --- Self Relations ---
+  // To keep existing MongoDB arrays, we map them correctly
+  followerIds     String[]  @db.ObjectId
+  followers       User[]    @relation("UserFollows", fields: [followerIds], references: [id])
+  
+  followingIds    String[]  @db.ObjectId
+  following       User[]    @relation("UserFollows", fields: [followingIds], references: [id])
+
+  closeFriendIds  String[]  @db.ObjectId
+  // Add a separate relation if you want to query closeFriends as User objects
+  
+  posts           Post[]    
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("users") // Ensure this matches your actual collection name
+}
+
+model Post {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  content     String
+  imageUrl    String?
+
+  authorId    String   @db.ObjectId
+  author      User     @relation(fields: [authorId], references: [id])
+
+  collegeId   String?  @db.ObjectId
+  college     College? @relation(fields: [collegeId], references: [id])
+
+  isAnonymous Boolean  @default(false)
+
+  likes       String[] @db.ObjectId
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
