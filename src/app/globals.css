@@ -219,3 +219,36 @@
     @apply bg-background text-foreground;
   }
 }
+/* ================================
+   NEON CYAN SIDEBAR (SCOPED)
+   ================================ */
+
+.sidebar-dark {
+  --sidebar: oklch(0.12 0.02 250); /* deep navy */
+  --sidebar-foreground: oklch(0.95 0 0);
+
+  /* neon cyan accent */
+  --sidebar-primary: oklch(0.78 0.16 200);
+  --sidebar-primary-foreground: oklch(0.12 0.02 250);
+
+  --sidebar-accent: oklch(0.18 0.03 250);
+  --sidebar-accent-foreground: oklch(0.78 0.16 200);
+
+  --sidebar-border: oklch(0.25 0.02 250 / 40%);
+  --sidebar-ring: oklch(0.78 0.16 200);
+  background:
+    radial-gradient(
+      circle at top left,
+      oklch(0.18 0.05 210 / 35%),
+      transparent 40%
+    ),
+    linear-gradient(
+      to bottom,
+      oklch(0.08 0.02 250),
+      oklch(0.04 0.01 250)
+    );
+    [data-sidebar="rail"]::after {
+  display: none !important;
+}
+
+}

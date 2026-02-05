@@ -26,7 +26,7 @@ const HomeProfile = async ({
   
   await connectDb();
   const dbUser = await User.findOne({ username });
-
+  if(2<5)throw new Error("backend error")
   if (!dbUser) redirect("/login");
 
   return (
@@ -35,14 +35,14 @@ const HomeProfile = async ({
         Welcome, {dbUser.name || username}!
       </h1>
 
-      <form action={handleSignOut}>
+      {/* <form action={handleSignOut}>
         <button
           type="submit"
           className="px-8 py-4 bg-teal-300 text-purple-700 text-2xl font-bold rounded-lg hover:bg-teal-400 transition"
         >
           Log Out
         </button>
-      </form>
+      </form> */}
     </div>
   );
 };
